@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "dayjs": "^1.11.7",
+    "nuxt": "^3.2.3",
+    "sass": "^1.59.2",
+    "sass-loader": "^13.2.0"
+  },
+  "dependencies": {
+    "microcms-js-sdk": "^2.3.2",
+    "nuxt-microcms-module": "^3.0.0"
+  }
+}

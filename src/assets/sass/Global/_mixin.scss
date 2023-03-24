@@ -1,0 +1,135 @@
+@use 'variables' as *;
+@use 'function' as *;
+@use "sass:math";
+
+// レスポンシブ
+@mixin pc($break-point: $breakpoint) {
+    @media screen and (min-width: #{$break-point + 1}), print {
+        @content;
+    }
+}
+
+@mixin sp($break-point: $breakpoint) {
+    @media screen and (max-width: #{$break-point}) {
+        @content;
+    }
+}
+
+// clearfix
+@mixin clearfix {
+    zoom: 1;
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
+// 背景画像差し替え
+@mixin backgroundFig($url) {
+    background: url("#{$imgPath}#{$url}") no-repeat 50% 50% / contain;
+}
+
+@mixin backgroundFigSP($w, $h, $url) {
+    width: $w;
+    height: 0;
+    padding-bottom: $h;
+    background: url("#{$imgPath}#{$url}") no-repeat 50% 50%;
+    background-size: contain;
+    text-indent: -9999px;
+}
+
+//疑似要素（絶対配置）
+@mixin pseudoElement {
+    content: '';
+    display: block;
+    position: absolute;
+}
+
+// aタグを親要素と同じ大きさに
+@mixin blockInline {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+// フォントサイズ
+@mixin adjustTextMargin($fs,$lh,$offset: 0) {
+    margin-top: ($offset - (getHalfReading($fs,$lh)) * 1px);
+    margin-bottom: (0 - (getHalfReading($fs,$lh)) * 1px);
+    font-size: $fs * 1px;
+    line-height: math.div($lh, $fs);
+}
+
+@mixin adjustTextMarginSP($fs,$lh,$offset: 0) {
+    margin-top: convertToVw($offset - (getHalfReading($fs,$lh)));
+    margin-bottom: convertToVw(0 - (getHalfReading($fs,$lh)));
+    font-size: convertToVw($fs);
+    line-height: math.div($lh, $fs);
+}
+
+@mixin setFontSize($fz, $lh) {
+    font-size: $fz * 1px;
+    line-height: math.div($lh, $fz);
+}
+
+@mixin setFontSizeSP($fz, $lh) {
+    font-size: convertToVw($fz);
+    line-height: math.div($lh, $fz);
+}
+
+// マウスポインター対応端末でのみホバー適用
+@mixin isHoverDevice() {
+    @media (hover: hover) and (pointer: fine) {
+        backface-visibility: hidden;
+        &:hover {
+            @content;
+        }
+    }
+}
+
+// テキストグラデーション 引数へはカラーコードをカンマ繋ぎで含める
+@mixin textGradation($colors...) {
+    background: -webkit-linear-gradient(0deg, $colors);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+// 背景グラデーション 引数へはカラーコードをカンマ繋ぎで含める
+@mixin bgGradation($colors...) {
+    background: -webkit-linear-gradient(0deg, $colors);
+}
+
+// 矢印アイコンのsvg
+@mixin svgArrow($color: fff) {
+    background: url("data:image/svg+xml;charset=utf8,%3Csvg data-name='グループ 185125' xmlns='http://www.w3.org/2000/svg' width='8' height='14'%3E%3Cpath data-name='211686_back_arrow_icon' d='M0 12.582 1.346 14 8 7 1.346 0 0 1.418 5.3 7Z' fill='%23#{$color}'/%3E%3C/svg%3E") no-repeat top left / contain;
+}
+
+// 矢印アイコンのsvg
+@mixin svgBtnArrow($color: fff) {
+    background: url("data:image/svg+xml;charset=utf8,%3Csvg data-name='グループ 185125' xmlns='http://www.w3.org/2000/svg' width='8' height='14'%3E%3Cpath data-name='211686_back_arrow_icon' d='M0 12.582 1.346 14 8 7 1.346 0 0 1.418 5.3 7Z' fill='%23#{$color}'/%3E%3C/svg%3E") no-repeat top left / contain;
+}
+
+
+// 下矢印アイコンのsvg
+@mixin svgDownArrow($color: fff) {
+    background: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8'%3E%3Cpath data-name='211686_back_arrow_icon' d='M1.418 0 0 1.346 7 8l7-6.654L12.582 0 7 5.3Z' fill='%23#{$color}'/%3E%3C/svg%3E") no-repeat top left / contain;
+}
+
+// zoomMTGアイコンのsvg
+@mixin svgMtgIcon($color: fff) {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23.945' height='20.279'%3E%3Cg data-name='PCディスプレイのアイコン素材 2'%3E%3Cpath data-name='パス 279693' d='M22.351.001H1.591A1.59 1.59 0 0 0 0 1.595v13.278a1.59 1.59 0 0 0 1.591 1.591h8.7v.354A1.59 1.59 0 0 1 8.7 18.409H6.36v1.87h11.222v-1.87h-2.337a1.59 1.59 0 0 1-1.591-1.591v-.354h8.7a1.59 1.59 0 0 0 1.591-1.591V1.595A1.59 1.59 0 0 0 22.351.001Zm-.651 12.94a.53.53 0 0 1-.53.53H2.775a.53.53 0 0 1-.53-.53V2.779a.53.53 0 0 1 .53-.53h18.392a.53.53 0 0 1 .53.53v10.162Z' fill='%23#{$color}'/%3E%3C/g%3E%3C/svg%3E") no-repeat top left / contain;
+}
+
+// お問い合わせアイコンのsvg
+@mixin svgContactIcon($color: fff) {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23' height='19'%3E%3Cpath data-name='3994383_email_envelope_letter_mail_newsletter_icon' d='M21.562 0H1.437A1.373 1.373 0 0 0 .42.463 1.668 1.668 0 0 0 0 1.583v15.834a1.668 1.668 0 0 0 .421 1.12A1.373 1.373 0 0 0 1.437 19h20.125a1.373 1.373 0 0 0 1.017-.463 1.668 1.668 0 0 0 .421-1.12V1.583a1.668 1.668 0 0 0-.421-1.12A1.373 1.373 0 0 0 21.563 0Zm-1.437 3.167v.665L11.5 9.26 2.875 3.831v-.665ZM2.875 15.833V7.478l7.912 4.98a1.323 1.323 0 0 0 1.426 0l7.912-4.98v8.355Z' fill='%23#{$color}'/%3E%3C/svg%3E") no-repeat top left / contain;;
+}
+
+@function re-color($code) {
+    @return str-slice("#{$code}", 2);
+}
+
+@mixin setContactBtn() {
+
+}

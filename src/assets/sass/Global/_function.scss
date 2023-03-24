@@ -1,0 +1,17 @@
+@use 'variables' as *;
+@use "sass:math";
+
+// px数をvwに変換
+@function convertToVw($pxNum, $viewport: 750) {
+    @return math.div($pxNum, $viewport) * 100vw;
+}
+
+// psdのサイズをpxに変換
+@function convertPcSize($px, $viewport: 750) {
+    @return $px * (math.div(500, $viewport)) * 1px;
+}
+
+// ハーフレディングを返す
+@function getHalfReading($fz, $lh) {
+    @return math.round(math.div(($lh - $fz), 2));
+}
